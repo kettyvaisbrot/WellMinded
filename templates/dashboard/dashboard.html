@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WellMinded Dashboard</title>
+    {% load static %}
+</head>
+<body>
+    <div class="container">
+        <h1>Daily Documentation</h1>
+        <form method="get" action="{% url 'dashboard:dashboard_home' %}">
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" name="date" value="{{ date }}">
+            <button type="submit">Load</button>
+        </form>
+
+        <div id="food-log">
+            <h2>Food Log</h2>
+            <form id="food-log-form" method="post" action="{% url 'dashboard:food-log' %}">
+                {% csrf_token %}
+                <input type="hidden" name="date" value="{{ date }}">
+                <div>
+                    <label for="meal">Meal:</label>
+                    <select name="meal" id="meal">
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="ate">Ate:</label>
+                    <input type="checkbox" name="ate" id="ate">
+                </div>
+                <div>
+                    <label for="time">Time:</label>
+                    <input type="time" name="time" id="time">
+                </div>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+
+        <div id="sport-log">
+            <h2>Sport Log</h2>
+            <form id="sport-log-form" method="post" action="{% url 'dashboard:sport-log' %}">
+                {% csrf_token %}
+                <input type="hidden" name="date" value="{{ date }}">
+                <div>
+                    <label for="did_sport">Did Sport:</label>
+                    <input type="checkbox" name="did_sport" id="did_sport">
+                </div>
+                <div>
+                    <label for="sport_type">Sport Type:</label>
+                    <select name="sport_type" id="sport_type">
+                        <option value="swimming">Swimming</option>
+                        <option value="running">Running</option>
+                        <option value="walking">Walking</option>
+                        <option value="gym">Gym Session</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="other_sport">Other Sport:</label>
+                    <input type="text" name="other_sport" id="other_sport">
+                </div>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+
+        <div id="sleep-log">
+            <h2>Sleeping Log</h2>
+            <form id="sleep-log-form" method="post" action="{% url 'dashboard:sleep-log' %}">
+                {% csrf_token %}
+                <input type="hidden" name="date" value="{{ date }}">
+                <div>
+                    <label for="sleep_time">Sleep Time:</label>
+                    <input type="time" name="sleep_time" id="sleep_time">
+                </div>
+                <div>
+                    <label for="wake_time">Wake Time:</label>
+                    <input type="time" name="wake_time" id="wake_time">
+                </div>
+                <div>
+                    <label for="woke_up_during_night">Woke Up During Night:</label>
+                    <input type="checkbox" name="woke_up_during_night" id="woke_up_during_night">
+                </div>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+
+        <div id="meetings-log">
+            <h2>Meetings Log</h2>
+            <form id="meetings-log-form" method="post" action="{% url 'dashboard:meetings' %}">
+                {% csrf_token %}
+                <input type="hidden" name="date" value="{{ date }}">
+                <div>
+                    <label for="met_people">Met People:</label>
+                    <input type="checkbox" name="met_people" id="met_people">
+                </div>
+                <div>
+                    <label for="positivity_rating">Positivity Rating:</label>
+                    <input type="number" name="positivity_rating" id="positivity_rating" min="1" max="5">
+                </div>
+                <div>
+                    <label for="meeting_types">Meeting Types:</label>
+                    <select name="meeting_types" id="meeting_types" multiple>
+                        <option value="family">With Family</option>
+                        <option value="friends">With Friends</option>
+                        <option value="business">Business Meeting</option>
+                        <option value="strangers">With Strangers</option>
+                    </select>
+                </div>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+
+        <div id="seizure-log">
+            <h2>Seizure Log</h2>
+            <form id="seizure-log-form" method="post" action="{% url 'dashboard:seizure-log' %}">
+                {% csrf_token %}
+                <input type="hidden" name="user" value="{{ request.user.id }}">
+                <div>
+                    <label for="seizure_time">Seizure Time:</label>
+                    <input type="datetime-local" name="seizure_time" id="seizure_time">
+                </div>
+                <div>
+                    <label for="duration_minutes">Duration (minutes):</label>
+                    <input type="number" name="duration_minutes" id="duration_minutes">
+                </div>
+                <div>
+                    <label for="last_memory">Last Memory:</label>
+                    <textarea name="last_memory" id="last_memory"></textarea>
+                </div>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+
+        <div id="medication-log">
+            <h2>Medication Log</h2>
+            <form id="medication-log-form" method="post" action="{% url 'dashboard:medication-log' %}">
+                {% csrf_token %}
+                <input type="hidden" name="user" value="{{ request.user.id }}">
+                <div>
+                    <label for="medication">Medication:</label>
+                    <select name="medication" id="medication">
+                        {% for medication in medications %}
+                            <option value="{{ medication.id }}">{{ medication.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="time_taken">Time Taken:</label>
+                    <input type="time" name="time_taken" id="time_taken">
+                </div>
+                <div>
+                    <label for="feeling_after_half_hour">Feeling After Half Hour:</label>
+                    <input type="text" name="feeling_after_half_hour" id="feeling_after_half_hour">
+                </div>
+                <div>
+                    <label for="feeling_after_one_hour">Feeling After One Hour:</label>
+                    <input type="text" name="feeling_after_one_hour" id="feeling_after_one_hour">
+                </div>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('form');
+
+            forms.forEach(form => {
+                // Skip the GET form for date selection
+                if (form.method.toLowerCase() === 'get') return;
+
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+                    const actionUrl = form.action;
+                    const method = form.method;
+
+                    fetch(actionUrl, {
+                        method: method,
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            alert(data.message);
+                        } else {
+                            alert('Something went wrong!');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
